@@ -350,10 +350,17 @@
 
   if (!form) return;
 
-  // Point this to your backend URL.
-  // During local dev: http://localhost:5000
-  // In production:   https://your-render-app.onrender.com
-  const API_URL = 'http://localhost:5000/api/bookings';
+  // Auto-detect environment:
+  // - localhost / 127.0.0.1  → hit local dev server
+  // - anything else          → hit the production Render backend
+  const BACKEND_BASE = (
+    window.location.hostname === 'localhost' ||
+    window.location.hostname === '127.0.0.1'
+  )
+    ? 'http://localhost:5000'
+    : 'https://kateringking-backend.onrender.com';   // ← update this after Render deploy
+
+  const API_URL = `${BACKEND_BASE}/api/bookings`;
 
   function setStatus(msg, type) {
     statusBox.textContent = msg;
