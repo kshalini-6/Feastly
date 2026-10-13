@@ -1,35 +1,45 @@
-require("dotenv").config();
-const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
+require('dotenv').config();
+const express  = require('express');
+const mongoose = require('mongoose');
+const cors     = require('cors');
 
 const app = express();
-app.use(cors());
+
+/* ── Middleware ─────────────────────────────────────────── */
+app.use(cors({
+  origin: process.env.FRONTEND_URL || '*',   // lock down to your Vercel URL in prod
+  methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+  allowedHeaders: ['Content-Type']
+}));
 app.use(express.json());
 
-const Enquiry = mongoose.model("Enquiry", new mongoose.Schema({
-  name: String,
-  phone: String,
-  eventDate: String,
-  guests: Number,
-  message: String,
-  createdAt: { type: Date, default: Date.now }
-}));
+/* ── Routes ─────────────────────────────────────────────── */
+app.use('/api/bookings', require('./routes/bookings'));
+// TODO: app.use('/api/menu', require('./routes/menu'));  ← add when menu is ready
 
-app.get("/api/health", (req, res) => res.json({ ok: true }));
+/* ── Health check ───────────────────────────────────────── */
+app.get('/api/health', (_req, res) => res.json({ ok: true }));
 
-app.post("/api/enquiries", async (req, res) => {
-  try {
-    const enquiry = await Enquiry.create(req.body);
-    res.status(201).json(enquiry);
-  } catch (err) {
-    res.status(400).json({ error: err.message });
-  }
+/* ── 404 handler ────────────────────────────────────────── */
+app.use((_req, res) => {
+  res.status(404).json({ error: 'Route not found' });
 });
 
-mongoose.connect(process.env.MONGO_URI)
+/* ── Global error handler ───────────────────────────────── */
+app.use((err, _req, res, _next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Internal server error' });
+});
+
+/* ── Database + Start ───────────────────────────────────── */
+mongoose
+  .connect(process.env.MONGO_URI)
   .then(() => {
-    console.log("MongoDB connected");
-    app.listen(process.env.PORT, () => console.log("Server on port " + process.env.PORT));
+    console.log('MongoDB connected');
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
   })
-  .catch(err => console.error(err));
+  .catch(err => {
+    console.error('MongoDB connection failed:', err.message);
+    process.exit(1);
+  });

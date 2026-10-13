@@ -338,3 +338,98 @@
 
   sections.forEach(section => observer.observe(section));
 })();
+
+
+/* ═══════════════════════════════════════════════════════════════
+   9. BOOKING FORM — fetch to /api/bookings
+═══════════════════════════════════════════════════════════════ */
+(function initBookingForm() {
+  const form       = document.getElementById('booking-form');
+  const statusBox  = document.getElementById('form-status');
+  const submitBtn  = document.getElementById('bf-submit');
+
+  if (!form) return;
+
+  // Point this to your backend URL.
+  // During local dev: http://localhost:5000
+  // In production:   https://your-render-app.onrender.com
+  const API_URL = 'http://localhost:5000/api/bookings';
+
+  function setStatus(msg, type) {
+    statusBox.textContent = msg;
+    statusBox.className   = `form-status form-status--${type}`;
+    statusBox.hidden      = false;
+  }
+
+  function clearStatus() {
+    statusBox.hidden    = true;
+    statusBox.textContent = '';
+    statusBox.className = 'form-status';
+  }
+
+  function setLoading(loading) {
+    const btnText    = submitBtn.querySelector('.btn-text');
+    const btnSpinner = submitBtn.querySelector('.btn-spinner');
+    submitBtn.disabled   = loading;
+    btnText.textContent  = loading ? 'Sending…' : 'Send Enquiry';
+    btnSpinner.hidden    = !loading;
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    clearStatus();
+
+    // Basic browser-level validation first
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    // Collect field values
+    const data = {
+      name:       form.name.value.trim(),
+      phone:      form.phone.value.trim(),
+      email:      form.email.value.trim(),
+      eventType:  form.eventType.value,
+      eventDate:  form.eventDate.value,
+      guestCount: Number(form.guestCount.value),
+      venue:      form.venue.value.trim(),
+      services:   Array.from(form.querySelectorAll('input[name="services"]:checked'))
+                       .map(cb => cb.value),
+      message:    form.message.value.trim()
+    };
+
+    setLoading(true);
+
+    try {
+      const res  = await fetch(API_URL, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify(data)
+      });
+
+      const json = await res.json();
+
+      if (res.ok && json.success) {
+        setStatus(
+          '✓ Your enquiry has been received. We will contact you within 24 hours.',
+          'success'
+        );
+        form.reset();
+      } else {
+        // Validation errors array or single error string from the server
+        const msg = Array.isArray(json.errors)
+          ? json.errors.join(' ')
+          : (json.error || 'Something went wrong. Please try again.');
+        setStatus(msg, 'error');
+      }
+    } catch (_err) {
+      setStatus(
+        'Unable to connect to the server. Please call us directly or try again later.',
+        'error'
+      );
+    } finally {
+      setLoading(false);
+    }
+  });
+})();

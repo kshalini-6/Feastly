@@ -2327,3 +2327,184 @@ button {
 }
 
 .menu-card:hover { transform: translateY(-6px); }
+
+
+/* ═══════════════════════════════════════════════════════════
+   BOOKING FORM — Plan Your Event section
+════════════════════════════════════════════════════════════ */
+
+.booking-form {
+  width: 100%;
+  max-width: 760px;
+  margin: 2.5rem auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Two-column rows */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.form-group--full {
+  grid-column: 1 / -1;
+}
+
+.form-row--submit {
+  justify-items: center;
+  margin-top: 0.5rem;
+}
+
+/* Labels */
+.form-label {
+  display: block;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.65);
+  margin-bottom: 0.4rem;
+}
+
+.form-label span { color: var(--gold-light, #c9a96e); }
+
+/* Inputs, selects, textarea */
+.form-input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 4px;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  padding: 0.65rem 0.9rem;
+  transition: border-color 0.2s, background 0.2s;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.form-input::placeholder { color: rgba(255, 255, 255, 0.3); }
+
+.form-input:focus {
+  border-color: var(--gold-light, #c9a96e);
+  background: rgba(255, 255, 255, 0.11);
+}
+
+.form-input:invalid:not(:placeholder-shown) {
+  border-color: #e07070;
+}
+
+/* Date input calendar icon colour fix */
+.form-input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.8);
+  cursor: pointer;
+}
+
+/* Select arrow */
+.form-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(255,255,255,0.5)' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.85rem center;
+  padding-right: 2.2rem;
+  cursor: pointer;
+}
+
+.form-select option { background: #1a1a1a; color: #fff; }
+
+/* Textarea */
+.form-textarea {
+  resize: vertical;
+  min-height: 110px;
+}
+
+/* Hint text */
+.form-hint {
+  display: block;
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.35);
+  margin-top: 0.3rem;
+}
+
+/* Checkboxes fieldset */
+.form-fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.form-checks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.2rem;
+  margin-top: 0.4rem;
+}
+
+.form-check {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.75);
+  user-select: none;
+}
+
+.form-check-input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--gold-light, #c9a96e);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* Status message */
+.form-status {
+  padding: 0.8rem 1rem;
+  border-radius: 4px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.form-status--success {
+  background: rgba(80, 200, 120, 0.15);
+  border: 1px solid rgba(80, 200, 120, 0.4);
+  color: #7ee8a2;
+}
+
+.form-status--error {
+  background: rgba(220, 80, 80, 0.15);
+  border: 1px solid rgba(220, 80, 80, 0.4);
+  color: #f4a0a0;
+}
+
+/* Submit button spinner */
+.btn-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  vertical-align: middle;
+  margin-left: 0.5rem;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Responsive — stack to single column on small screens */
+@media (max-width: 600px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  .form-group--full {
+    grid-column: 1;
+  }
+}
