@@ -1,6 +1,6 @@
 # KateringKing — Website Documentation
 
-> **Crafted for Taste. Engineered for Elegance.**  
+> **Crafted for Taste. Engineered for Elegance.**
 > Official website for KateringKing.com — a luxury Hyderabadi catering brand specialising in authentic cuisine and premium event services.
 
 ---
@@ -8,392 +8,408 @@
 ## Table of Contents
 
 1. [Project Overview](#1-project-overview)
-2. [How to Open the Website](#2-how-to-open-the-website)
+2. [Tech Stack](#2-tech-stack)
 3. [Project Structure](#3-project-structure)
-4. [Page Sections](#4-page-sections)
-5. [File Descriptions](#5-file-descriptions)
-   - [index.html](#indexhtml)
-   - [styles.css](#stylescss)
-   - [main.js](#mainjs)
-   - [Images (assets/pictrues)](#images-assetspictrues)
-   - [Videos (assets/video)](#videos-assetsvideo)
-6. [Navigation](#6-navigation)
-7. [Design System](#7-design-system)
-8. [Fonts](#8-fonts)
-9. [Contact & Social Links](#9-contact--social-links)
-10. [How to Make Common Updates](#10-how-to-make-common-updates)
+4. [Running Locally](#4-running-locally)
+5. [Page Sections](#5-page-sections)
+6. [File Descriptions](#6-file-descriptions)
+7. [Backend API](#7-backend-api)
+8. [Deployment](#8-deployment)
+9. [Environment Variables](#9-environment-variables)
+10. [Design System](#10-design-system)
+11. [Fonts](#11-fonts)
+12. [Contact & Social Links](#12-contact--social-links)
+13. [How to Make Common Updates](#13-how-to-make-common-updates)
 
 ---
 
 ## 1. Project Overview
 
-KateringKing is a **single-page website** built with plain HTML, CSS, and JavaScript — no frameworks, no build tools, no dependencies. You can open it directly in any web browser without installing anything.
+KateringKing is a **full-stack website** with a static HTML/CSS/JS frontend and a Node.js/Express backend. The frontend is a single-page website showcasing the brand, menu, and services. The backend handles booking enquiries — saving them to MongoDB and sending email notifications via Gmail.
 
-The website is designed to:
-- Showcase the brand's identity and culinary heritage
-- Display the full catering menu with food photography and videos
-- Describe the three service offerings
-- Allow visitors to get in touch via phone or WhatsApp
-- Work fully on desktop, tablet, and mobile
-
-**Technology stack:**
-| Layer | Technology |
-|---|---|
-| Structure | HTML5 |
-| Styling | CSS3 (custom properties, grid, flexbox) |
-| Interactivity | Vanilla JavaScript (ES6+) |
-| Fonts | Google Fonts (loaded from CDN) |
-| Images | Local files + Unsplash CDN |
-| Videos | Local MP4 files |
+The website:
+- Showcases the brand's identity and Hyderabadi culinary heritage
+- Displays the full catering menu with food photography and videos
+- Describes three service offerings (Weddings, Corporate, Private Dining)
+- Accepts booking enquiries via a form (saved to DB + email notification sent)
+- Has floating WhatsApp and phone contact buttons
+- Works fully on desktop, tablet, and mobile
 
 ---
 
-## 2. How to Open the Website
+## 2. Tech Stack
 
-No installation required. Simply open the file in a browser:
-
-1. Navigate to the `Kateringking` folder on your computer
-2. Double-click `index.html`
-3. The website opens in your default browser
-
-> **For the hero video to autoplay**, open the file through a local server rather than directly from the file system. You can use the **Live Server** extension in VS Code, or any simple local server tool.
+| Layer | Technology |
+|---|---|
+| Frontend | HTML5, CSS3, Vanilla JavaScript (ES6+) |
+| Backend | Node.js, Express.js |
+| Database | MongoDB (Atlas in production, local in dev) |
+| ODM | Mongoose |
+| Email | Nodemailer (Gmail) |
+| Fonts | Google Fonts (CDN) |
+| Images | Local files + Unsplash CDN |
+| Videos | Local MP4 files |
+| Frontend hosting | Vercel |
+| Backend hosting | Render |
+| DB hosting | MongoDB Atlas |
 
 ---
 
 ## 3. Project Structure
 
 ```
-Kateringking/
+KateringKing/
 │
-├── index.html                  ← The entire website (single HTML file)
-├── README.md                   ← This documentation file
+├── index.html                  ← Entire frontend (single HTML file)
+├── vercel.json                 ← Vercel deployment config
+├── .gitignore                  ← Excludes node_modules and .env
+├── README.md                   ← This file
 │
-└── assets/
-    ├── css/
-    │   └── styles.css          ← All styling for the website
-    │
-    ├── js/
-    │   └── main.js             ← All interactivity and animations
-    │
-    ├── pictrues/               ← All image files used on the website
-    │   ├── Logo.jpeg
-    │   ├── Kareli roast.jpg
-    │   ├── Musbi.png
-    │   ├── Murgh-Musallam.jpg
-    │   ├── Phatar ka gosht.jpeg
-    │   ├── Warqi Samosa.jpg
-    │   ├── Lukmi.png
-    │   ├── Sheekh kebab.jpeg
-    │   ├── Cold Fish Salad.jpeg
-    │   ├── haleem.jpg
-    │   ├── Malai_paya.jpg
-    │   ├── shorba.jpg
-    │   ├── hyderabadi-shikampuri-kebabs.jpg
-    │   ├── Lagani gosht.jpeg
-    │   ├── dumka ghosht.jpg
-    │   ├── asif jahi.webp
-    │   ├── Dum ka murgh.jpeg
-    │   ├── mirchi_ka_salan.avif
-    │   ├── baingan.jpg
-    │   ├── Biryani.jpg
-    │   ├── Double-Ka-Meetha.jpg
-    │   ├── qubani-ka-meetha.jpeg
-    │   ├── Badam-Kheer.jpg
-    │   ├── royal_cuts.jpg
-    │   ├── The-Cut-Roast.jpg
-    │   ├── wedding.png
-    │   ├── Corporate.png
-    │   ├── private dining.png
-    │   ├── About.png
-    │   ├── Hospitality and Service.png
-    │   ├── Warqi.jpg
-    │   ├── Double_ka_meetha.jpg
-    │   └── Musbi.png
-    │
-    └── video/                  ← All video files used on the website
-        ├── hero.mp4            ← Hero section background video
-        ├── kareli roast.mp4
-        ├── musbi.mp4
-        ├── Shaami.mp4
-        ├── phatar ka gosht.mp4
-        ├── Talwa ghosht.mp4
-        ├── dum ka gosht.mp4
-        ├── Dum ka murg.mp4
-        ├── laghani ghosht.mp4
-        ├── Malai paya.mp4
-        ├── haleem.mp4
-        ├── biryani.mp4
-        ├── Badam ka kheer.mp4
-        ├── muthi ke kabab.mp4
-        ├── client.mp4
-        └── v1.mp4
+├── assets/
+│   ├── css/
+│   │   └── styles.css          ← All styling
+│   ├── js/
+│   │   └── main.js             ← All interactivity, form submission
+│   ├── pictrues/               ← All images (note: folder name has typo — do not rename)
+│   └── video/                  ← All MP4 videos
+│
+└── backend/
+    ├── server.js               ← Express app entry point
+    ├── package.json
+    ├── .env                    ← Local env vars (never committed to git)
+    ├── .gitignore
+    ├── models/
+    │   └── Booking.js          ← Mongoose schema for booking enquiries
+    ├── routes/
+    │   └── bookings.js         ← CRUD routes for /api/bookings
+    └── utils/
+        └── mailer.js           ← Nodemailer — owner + customer emails
 ```
 
-> **Note:** The images folder is named `pictrues` (a spelling variation). Do not rename it — the website references this exact folder name throughout.
+> The images folder is named `pictrues` (a spelling variation). Do not rename it — the website references this exact folder name throughout.
 
 ---
 
-## 4. Page Sections
+## 4. Running Locally
 
-The website is one long scrollable page. Each section has an ID that the navigation links scroll to.
+### Frontend only
 
-| # | Section Name | ID | Description |
+No installation required. Open `index.html` directly in a browser — or use the **Live Server** extension in VS Code for video autoplay to work.
+
+### Frontend + Backend (full stack)
+
+**Prerequisites:** Node.js, MongoDB running locally (`mongod`)
+
+```
+# 1. Install backend dependencies
+cd backend
+npm install
+
+# 2. Create your .env file (copy from the template below)
+# backend/.env
+
+# 3. Start the backend
+npm run dev        ← uses nodemon (auto-restarts on change)
+# or
+npm start          ← plain node
+
+# 4. Open index.html in a browser (or Live Server)
+```
+
+The backend runs on `http://localhost:5000`.  
+The form in `main.js` auto-detects localhost and points there during development.
+
+### backend/.env template
+
+```env
+PORT=5000
+MONGO_URI=mongodb://127.0.0.1:27017/kateringking
+FRONTEND_URL=*
+EMAIL_USER=your-gmail@gmail.com
+EMAIL_PASS=your-16-char-app-password
+OWNER_EMAIL=your-gmail@gmail.com
+```
+
+> For `EMAIL_PASS`, use a Gmail App Password — not your real Gmail password.
+> Google Account → Security → 2-Step Verification → App Passwords
+
+---
+
+## 5. Page Sections
+
+The website is one long scrollable page. Each section has an ID the navigation links scroll to.
+
+| # | Section | ID | Description |
 |---|---|---|---|
-| 1 | **Hero** | `#hero` | Full-screen background video with the brand name, tagline, and two call-to-action buttons |
-| 2 | **About Us** | `#about-us` | Brand origin story, founder's vision, and the educated choice — three sub-blocks |
-| 3 | **Hospitality** | `#about` | "Elevating the Art of Hospitality" — the service philosophy with stats |
-| 4 | **Menu** | `#menu` | The full catering menu with two tabs — The Signature Reserve and The Heritage Archive |
-| 5 | **Services** | `#services` | Three service cards — Weddings, Corporate Events, and Private Dining |
-| 6 | **Plan Your Event** | `#contact` | Closing call-to-action section with a phone link |
+| 1 | Hero | `#hero` | Full-screen video background, brand name, tagline, two CTA buttons |
+| 2 | About Us | `#about-us` | Brand origin, founder's vision, three credential pillars |
+| 3 | Hospitality | `#about` | Service philosophy, 20+ years / 500+ events / 100% authentic stats |
+| 4 | Menu | `#menu` | Tabbed menu — Signature Reserve + Heritage Archive |
+| 5 | Services | `#services` | Three service cards — Weddings, Corporate, Private Dining |
+| 6 | Plan Your Event | `#contact` | Booking enquiry form (submits to backend API) |
 
-### Menu Section — Tab Structure
-
-The menu section is divided into two tabs that the visitor can switch between:
+### Menu Tabs
 
 **Tab 1 — The Signature Reserve**
-- Course I: The Royal Roasts & Cuts (Kareli Roast, Musbi)
+- Course I: Royal Roasts & Cuts (Kareli Roast)
 - Course II: Artisanal Bites (Warqi Samosa, Lukmi)
-- Course III: The Centerpieces (Murgh Mussallam, Phattar Ka Gosht, Dum Ke Chops, Cold Fish Salads)
+- Course III: Centerpieces (Murgh Mussallam, Phattar Ka Gosht, Dum Ke Chops, Cold Fish Salads)
 
 **Tab 2 — The Heritage Archive**
-- Course I: The First Course (7 starter dishes with photos)
-- Course II: The Main Course (Non-Veg Curries + Vegetarian Classics)
-- Course III: The Dastarkhwan — Biryani Collection (4 biryanis, with a background image)
-- Course IV: The Final Act — Desserts (Double Ka Meetha, Qubani Ka Meetha, Badam Ki Kheer with photos)
+- Course I: First Course — 7 starters with photos/videos
+- Course II: Main Course — Non-Veg Curries + Vegetarian Classics
+- Course III: The Dastarkhwan — 4 Biryanis (full-bleed background)
+- Course IV: The Final Act — 3 Desserts (Double Ka Meetha, Qubani Ka Meetha, Badam Ki Kheer)
 
 ---
 
-## 5. File Descriptions
+## 6. File Descriptions
 
 ### index.html
 
-The entire website lives in this single file. It is structured as follows:
+The entire frontend in one file (~47 KB). Structure:
 
 ```
-<head>          — Page metadata, font imports, stylesheet link
-<header>        — Fixed navigation bar (desktop + mobile hamburger)
-<div>           — Mobile menu overlay (full-screen, outside header)
+<head>     — Metadata, Google Fonts, styles.css
+<header>   — Fixed nav bar (desktop links + hamburger)
+<div>      — Mobile menu overlay
 <main>
-  <section>     — Hero
-  <section>     — About Us (#about-us)
-  <section>     — Hospitality (#about)
-  <section>     — Menu (#menu) with tabbed content
-  <section>     — Services (#services)
-  <section>     — Closing CTA (#contact)
-  <a>           — Floating WhatsApp button (fixed, bottom-right)
-  <a>           — Floating phone button (fixed, bottom-right above WhatsApp)
-<footer>        — Logo, nav links, social icons, copyright
-<script>        — Links to main.js
+  Hero → About Us → Hospitality → Menu → Services → Booking Form
+  Floating WhatsApp button
+  Floating phone button
+<footer>   — Logo, nav links, social icons, copyright year
+<script>   — main.js
 ```
 
-**File size:** ~47 KB
+### styles.css (~53 KB)
+
+All visual styling in one file. Key sections:
+
+| Section | Controls |
+|---|---|
+| `:root` | CSS variables — colours, fonts, spacing |
+| Navigation | Fixed nav, scroll state, hamburger, mobile overlay |
+| Hero | Full-screen video, overlay, animated entrance |
+| About / Hospitality | Two-column layout, stats |
+| Menu | Tabs, sticky tab bar, dish cards, biryani section, desserts |
+| Services | Three-card grid with hover |
+| Booking Form | Form layout, input styles, status messages |
+| Floating Buttons | WhatsApp (green) and phone (gold) with pulse animation |
+| Responsive | Breakpoints at 1024px, 768px, 480px |
+
+### main.js (~12 KB)
+
+All interactivity. Self-contained IIFE functions:
+
+| Function | Purpose |
+|---|---|
+| `initNav` | Transparent nav over hero → dark on scroll |
+| `initMobileMenu` | Full-screen mobile overlay, Escape key, resize handling |
+| `initSmoothScroll` | Smooth anchor scrolling with nav height offset |
+| `initScrollReveal` | IntersectionObserver fade/slide animations |
+| `initMenuTabs` | Tab switching + keyboard arrow navigation |
+| `initVideoFallback` | Hides hero video if autoplay blocked |
+| `setFooterYear` | Auto-sets copyright year |
+| `initActiveNavLink` | Highlights active nav link on scroll |
+| `initBookingForm` | Collects form data, POSTs to `/api/bookings`, shows success/error |
+
+The API URL auto-detects environment:
+- `localhost` / `127.0.0.1` → `http://localhost:5000`
+- Any other host → production Render URL
+
+### backend/models/Booking.js
+
+Mongoose schema with these fields:
+
+| Field | Type | Required |
+|---|---|---|
+| `name` | String | Yes |
+| `phone` | String | Yes |
+| `email` | String | Yes |
+| `eventType` | Enum | Yes |
+| `eventDate` | Date | Yes |
+| `guestCount` | Number | Yes |
+| `venue` | String | Yes |
+| `services` | [String] | No |
+| `message` | String | No |
+| `status` | Enum (Pending/Reviewed/Confirmed/Cancelled) | Auto: Pending |
+
+### backend/utils/mailer.js
+
+Sends two emails on every new booking:
+1. **Owner notification** — full booking details table sent to `OWNER_EMAIL`
+2. **Customer confirmation** — enquiry summary + contact details sent to the customer
+
+Both run in parallel via `Promise.allSettled` — a mailer failure never breaks the API response.
 
 ---
 
-### styles.css
+## 7. Backend API
 
-Located at `assets/css/styles.css`. This file controls the entire visual appearance of the website.
+Base URL (production): `https://kateringking-backend.onrender.com`
 
-It is organised into clearly labelled sections:
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/api/health` | Health check — returns `{ ok: true }` |
+| `POST` | `/api/bookings` | Create a new booking enquiry |
+| `GET` | `/api/bookings` | List all bookings (admin) — supports `?status=Pending` |
+| `GET` | `/api/bookings/:id` | Get single booking by ID |
+| `PATCH` | `/api/bookings/:id/status` | Update booking status (admin) |
+| `DELETE` | `/api/bookings/:id` | Delete a booking (admin) |
 
-| Section | What it controls |
+### POST /api/bookings — example request body
+
+```json
+{
+  "name": "Mohammed Ali",
+  "phone": "+91 98490 00000",
+  "email": "guest@example.com",
+  "eventType": "Wedding",
+  "eventDate": "2027-03-15",
+  "guestCount": 300,
+  "venue": "Aura Convention, Hyderabad",
+  "services": ["Full Catering", "Service Staff Only"],
+  "message": "Need Zafrani Biryani as the main dish."
+}
+```
+
+### POST /api/bookings — example success response
+
+```json
+{
+  "success": true,
+  "message": "Booking enquiry received. We will get back to you shortly.",
+  "data": { ...booking object }
+}
+```
+
+---
+
+## 8. Deployment
+
+| Part | Platform | URL |
+|---|---|---|
+| Frontend | Vercel | https://kateringking.vercel.app |
+| Backend | Render | https://kateringking-backend.onrender.com |
+| Database | MongoDB Atlas | kateringking cluster (ap-south-1, Mumbai) |
+
+### Deploying the frontend (Vercel)
+
+1. Go to [vercel.com](https://vercel.com) → New Project → import `Feastly` repo
+2. Framework preset: **Other**
+3. Root directory: `.` (repo root, not `backend`)
+4. Build command: *(leave blank)*
+5. Click Deploy
+
+### Deploying the backend (Render)
+
+1. Go to [render.com](https://render.com) → New Web Service → import `Feastly` repo
+2. Root directory: `backend`
+3. Build command: `npm install`
+4. Start command: `npm start`
+5. Add all environment variables (see section below)
+6. Click Create Web Service
+
+### After both are deployed
+
+- Update `FRONTEND_URL` in Render env vars to your actual Vercel URL
+- Update `BACKEND_BASE` in `assets/js/main.js` to your actual Render URL → commit + push → Vercel auto-redeploys
+
+---
+
+## 9. Environment Variables
+
+These go in Render's Environment tab (never commit them to git).
+
+| Variable | Description |
 |---|---|
-| Custom Properties (`:root`) | Brand colours, fonts, spacing, transitions — change these to restyle the whole site |
-| Reset & Base | Browser default resets, body font, box-sizing |
-| Utility | Container, section labels, titles, scroll reveal classes |
-| Buttons | `.btn-primary` (gold) and `.btn-ghost` (transparent) styles |
-| Navigation | Fixed top nav, scrolled state, hamburger, mobile menu overlay |
-| Hero | Full-screen video section, cinematic overlay, animated text |
-| About / Hospitality | Two-column editorial layout, stats row |
-| About Us | Three sub-blocks: Pioneer intro, Founder's Vision, Educated Choice + pillars |
-| Menu | Tabbed interface, sticky tab bar, signature dish rows, heritage courses, biryani section, dessert cards |
-| Services | Three-card grid with hover effects |
-| Closing CTA | Full-screen background image section |
-| Footer | Brand logo, nav links, icon row |
-| Floating Buttons | WhatsApp (green) and phone (gold) fixed buttons |
-| Responsive | Media queries for tablet (≤1024px), mobile (≤768px), small mobile (≤480px) |
+| `MONGO_URI` | MongoDB Atlas connection string |
+| `EMAIL_USER` | Gmail address that sends emails |
+| `EMAIL_PASS` | Gmail App Password (16 characters, with spaces) |
+| `OWNER_EMAIL` | Email that receives booking notifications |
+| `FRONTEND_URL` | Vercel frontend URL (for CORS) |
+| `PORT` | Optional — Render sets this automatically |
 
-**Colour palette** (defined as CSS variables):
+---
 
-| Variable | Colour | Used for |
+## 10. Design System
+
+### Colour palette
+
+| Variable | Hex | Used for |
 |---|---|---|
 | `--navy` | `#0D1B2A` | Primary dark background |
 | `--navy-mid` | `#152233` | Cards, nav scrolled state |
-| `--gold` | `#C9A84C` | Borders, icons, buttons |
+| `--gold` | `#C9A84C` | Borders, icons, primary buttons |
 | `--gold-light` | `#E2C47A` | Hover states, active tab |
 | `--cream` | `#F0EBE0` | Text on dark backgrounds |
 | `--ivory` | `#F5F0EA` | Light section backgrounds |
-| `--silver` | `#B8C0CC` | Subtle accents |
+| `--silver` | `#B8C0CC` | Subtle text accents |
 
-**File size:** ~53 KB
+All colours are defined as CSS custom properties in the `:root` block of `styles.css`.
 
----
+### Typography
 
-### main.js
-
-Located at `assets/js/main.js`. This file handles all page interactivity. It is split into self-contained functions:
-
-| Function | What it does |
-|---|---|
-| `initNav` | Makes the navigation bar transparent over the hero and switches to a dark glass background as the user scrolls |
-| `initMobileMenu` | Opens and closes the full-screen mobile navigation overlay; handles close on link click, Escape key, and window resize |
-| `initSmoothScroll` | Intercepts all `href="#..."` anchor clicks and scrolls smoothly to the target section, accounting for the fixed nav height |
-| `initScrollReveal` | Uses `IntersectionObserver` to fade and slide in sections and cards as they enter the viewport |
-| `initMenuTabs` | Switches between the two menu tabs (Signature Reserve / Heritage Archive) and handles keyboard arrow-key navigation |
-| `initVideoFallback` | Handles cases where the hero video cannot autoplay (e.g. browser policy) by hiding the video element and showing the poster image |
-| `setFooterYear` | Automatically sets the copyright year in the footer |
-| `initActiveNavLink` | Highlights the current section's nav link as the user scrolls |
-
-**File size:** ~12 KB
-
----
-
-### Images (`assets/pictrues`)
-
-All images used in the website are stored here. Key images and where they appear:
-
-| File | Used in |
-|---|---|
-| `Logo.jpeg` | Navigation bar and footer |
-| `Kareli roast.jpg` | Signature Reserve — Royal Roasts |
-| `Musbi.png` | Signature Reserve — Royal Roasts |
-| `Murgh-Musallam.jpg` | Signature Reserve — Centerpieces |
-| `Phatar ka gosht.jpeg` | Signature Reserve — Centerpieces |
-| `Warqi Samosa.jpg` | Signature Reserve — Artisanal Bites (Warqi Samosa & Lukmi cards) |
-| `Sheekh kebab.jpeg` | Signature Reserve — Artisanal Bites |
-| `haleem.jpg` | Heritage Archive — First Course |
-| `Malai_paya.jpg` | Heritage Archive — First Course |
-| `shorba.jpg` | Heritage Archive — First Course |
-| `hyderabadi-shikampuri-kebabs.jpg` | Heritage Archive — First Course |
-| `Lagani gosht.jpeg` | Heritage Archive — Main Course |
-| `dumka ghosht.jpg` | Heritage Archive — Main Course |
-| `asif jahi.webp` | Heritage Archive — Main Course |
-| `Dum ka murgh.jpeg` | Heritage Archive — Main Course |
-| `mirchi_ka_salan.avif` | Heritage Archive — Main Course (Veg) |
-| `baingan.jpg` | Heritage Archive — Main Course (Veg) |
-| `Double-Ka-Meetha.jpg` | Heritage Archive — Final Act Desserts |
-| `qubani-ka-meetha.jpeg` | Heritage Archive — Final Act Desserts |
-| `Badam-Kheer.jpg` | Heritage Archive — Final Act Desserts |
-| `royal_cuts.jpg` | About Us — Pioneer section |
-| `wedding.png` | Services — Weddings card |
-| `Corporate.png` | Services — Corporate Events card |
-| `private dining.png` | Services — Private Dining card |
-
-> Some images from Unsplash are loaded directly from their CDN (no local file needed) for sections like the hero fallback, biryani background, and closing CTA.
-
----
-
-### Videos (`assets/video`)
-
-All videos are MP4 format and play inline (autoplay, muted, looped).
-
-| File | Used in |
-|---|---|
-| `hero.mp4` | Hero section — full-screen background video |
-| `kareli roast.mp4` | Signature Reserve — Kareli Roast dish |
-| `musbi.mp4` | Signature Reserve — Musbi dish |
-| `Shaami.mp4` | Signature Reserve — Artisanal Bites |
-| `phatar ka gosht.mp4` | Signature Reserve — Centerpieces |
-| `Talwa ghosht.mp4` | Heritage Archive — First Course |
-| `dum ka gosht.mp4` | Heritage Archive — Main Course |
-| `Dum ka murg.mp4` | Heritage Archive — Main Course |
-| `laghani ghosht.mp4` | Heritage Archive — Main Course |
-| `Malai paya.mp4` | Heritage Archive — First Course |
-| `haleem.mp4` | Heritage Archive — First Course |
-| `biryani.mp4` | Heritage Archive — Biryani section |
-| `Badam ka kheer.mp4` | Heritage Archive — Final Act Desserts |
-| `muthi ke kabab.mp4` | Not currently in use (dish was removed) |
-| `client.mp4` | Not currently assigned to a section |
-| `v1.mp4` | Not currently assigned to a section |
-
----
-
-## 6. Navigation
-
-The navigation bar is **fixed** — it stays at the top of the screen as the visitor scrolls.
-
-**Desktop navigation links:**
-- **About** → scrolls to `#about-us`
-- **Menu** → scrolls to `#menu`
-- **Services** → scrolls to `#services`
-- **Plan Your Event** → scrolls to `#contact`
-
-**Mobile navigation:**  
-On screens narrower than 768px, the desktop links are hidden and replaced by a hamburger button (☰) in the top right. Tapping it opens a full-screen overlay menu with the same links.
-
-**Sticky menu tabs:**  
-Inside the Menu section, the "The Signature Reserve" and "The Heritage Archive" tab buttons stick to the top of the screen (just below the nav bar) as the visitor scrolls through the menu. They return to normal position once the visitor scrolls past the entire menu section.
-
----
-
-## 7. Design System
-
-The website uses a consistent visual language throughout:
-
-**Backgrounds:**
-- Dark sections (Hero, Menu, Footer): `--navy` (`#0D1B2A`)
-- Light sections (About, Services, About Us — Educated Choice): `--ivory` / `--warm-white`
-- Warm white sections (Hospitality, About Us — Pioneer): `--warm-white`
-
-**Typography hierarchy:**
-- Page/section titles: Cormorant Garamond (serif), thin weight, large size
-- Body text: Inter (sans-serif), light/regular weight
-- Labels and buttons: Inter, uppercase, wide letter-spacing
-
-**Animations:**
-- All sections and cards fade and slide in when scrolled into view (`reveal-up`, `reveal-left`, `reveal-right` CSS classes, triggered by `IntersectionObserver` in `main.js`)
-- Hero text animates in on page load with staggered delays
-- Images scale slightly on hover
-- The floating WhatsApp and phone buttons pulse with a glow animation
-
----
-
-## 8. Fonts
-
-Fonts are loaded from Google Fonts. An internet connection is required for them to display. If offline, the browser will fall back to system serif/sans-serif fonts.
-
-| Font | Style | Used for |
+| Font | Type | Used for |
 |---|---|---|
-| Cormorant Garamond | Serif, weights 300–700 | All headings and section titles |
-| Playfair Display | Serif, weights 400 & 700 | Display headings (secondary) |
-| Inter | Sans-serif, weights 300–600 | Body text, labels, buttons, nav |
+| Cormorant Garamond | Serif | All headings and section titles |
+| Playfair Display | Serif | Display headings (secondary) |
+| Inter | Sans-serif | Body text, labels, buttons, nav |
+
+### Animations
+
+- Scroll reveal: `reveal-up`, `reveal-left`, `reveal-right` — triggered by `IntersectionObserver`
+- Hero text: staggered entrance animation on page load
+- Images: subtle scale on hover
+- Floating buttons: gold/green glow pulse animation
 
 ---
 
-## 9. Contact & Social Links
+## 11. Fonts
 
-The following real contact details are embedded in the website:
-
-| Type | Value | Where it appears |
-|---|---|---|
-| Phone | `9849090123` | Floating phone button, CTA button, footer icon |
-| WhatsApp | `9849090123` | Floating WhatsApp button, footer icon |
-| Instagram | `@kateringkingservices` | Footer icon |
-
-**To update the phone number**, search for `9849090123` in `index.html` and replace all occurrences.
+Loaded from Google Fonts CDN. Requires an internet connection — falls back to system serif/sans-serif if offline.
 
 ---
 
-## 10. How to Make Common Updates
+## 12. Contact & Social Links
 
-### Change the phone number
-Open `index.html`, use Find & Replace (`Ctrl+H`), search for `9849090123` and replace with the new number. There are 6 occurrences.
+| Type | Value |
+|---|---|
+| Phone | `+91 9963220052` |
+| WhatsApp | `+91 9963220052` |
+| Instagram | [@kateringkingservices](https://www.instagram.com/kateringkingservices) |
 
-### Add or replace a dish image
-Place the new image file in `assets/pictrues/`, then find the relevant `<img src="...">` tag in `index.html` and update the `src` attribute.
+To update the phone number: open `index.html`, use Find & Replace (`Ctrl+H`), search `9963220052` and replace all.
 
-### Add or replace a dish video
-Place the new `.mp4` file in `assets/video/`, then find the relevant `<source src="...">` tag in `index.html` and update the `src` attribute.
+---
+
+## 13. How to Make Common Updates
+
+### Update the Render backend URL
+Open `assets/js/main.js`, find `BACKEND_BASE` and replace the production URL string. Commit and push — Vercel redeploys automatically.
 
 ### Change a brand colour
-Open `assets/css/styles.css`, scroll to the `:root { }` block at the very top, and update the relevant CSS variable (e.g. `--gold`, `--navy`). The change applies everywhere that colour is used.
+Open `assets/css/styles.css` → `:root { }` block → update the relevant CSS variable.
+
+### Add or replace a dish image
+Drop the new file in `assets/pictrues/` → update the `src` in `index.html`.
+
+### Add or replace a dish video
+Drop the new `.mp4` in `assets/video/` → update the `<source src="...">` in `index.html`.
 
 ### Replace the hero video
-Replace the file at `assets/video/hero.mp4` with a new MP4 file using the same filename. The website will use the new video automatically.
+Replace `assets/video/biryani.mp4` (currently used as hero) with a new file. Update the `src` in the hero `<video>` tag if using a different filename.
 
 ### Update the logo
-Replace `assets/pictrues/Logo.jpeg` with a new image file using the same filename.
+Replace `assets/pictrues/Logo.jpeg` with a new file using the same name. It appears in the footer.
+
+### View all booking enquiries
+Hit the admin endpoint directly:
+```
+GET https://kateringking-backend.onrender.com/api/bookings
+GET https://kateringking-backend.onrender.com/api/bookings?status=Pending
+```
 
 ---
 
-*This website was built as a pure HTML/CSS/JS project — no frameworks, no build process, no package manager. Open `index.html` in a browser and it works.*
+*Frontend: pure HTML/CSS/JS — open `index.html` and it works. Backend: Node/Express/MongoDB — requires env vars and a running server.*
